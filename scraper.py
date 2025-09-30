@@ -1,4 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
 
-print("Hey")
+for i in range(5):
+    print("Hey")
