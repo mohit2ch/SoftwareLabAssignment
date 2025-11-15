@@ -1,0 +1,175 @@
+.proxy-table-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* This will now try to fill the .table-area */
+  overflow: hidden; /* Contains the .table-responsive-wrapper */
+}
+
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 0 8px 0;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0; /* Prevent controls from shrinking */
+}
+
+.table-section-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-right: auto;
+}
+
+.filter-sort-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-btn, .sort-btn {
+  padding: 7px 14px;
+  border: 1px solid var(--border-color);
+  background-color: var(--primary-bg);
+  color: var(--text-secondary);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.filter-btn:disabled, .sort-btn:disabled {
+  background-color: #373b41 !important;
+  color: var(--text-secondary) !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+  border-color: var(--border-color) !important;
+}
+
+
+.filter-btn:hover:not(.active):not(:disabled),
+.sort-btn:hover:not(.active):not(:disabled) {
+  background-color: #3a3f47;
+  color: var(--text-color);
+  border-color: #555c66;
+}
+
+.filter-btn.active, .sort-btn.active {
+  color: #fff;
+  font-weight: 600;
+}
+
+.filter-btn.active.all { background-color: var(--accent-teal); border-color: var(--accent-teal); }
+.filter-btn.active.valid { background-color: var(--accent-green); border-color: var(--accent-green); }
+.filter-btn.active.invalid { background-color: var(--accent-orange); border-color: var(--accent-orange); }
+
+.sort-btn.active {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+}
+
+.table-responsive-wrapper {
+  overflow-y: auto; /* Primary scroll for table rows */
+  overflow-x: auto; /* Scroll for wide table */
+  width: 100%;
+  flex-grow: 1; /* Takes remaining space within .proxy-table-container */
+  -webkit-overflow-scrolling: touch;
+}
+
+.proxy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  min-width: 650px;
+}
+
+.proxy-table th,
+.proxy-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.proxy-table th {
+  background-color: #2f343c;
+  color: var(--text-color);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: sticky; 
+  top: 0; 
+  z-index: 10; /* Make sure header is above scrolled content */
+}
+
+/* ... rest of ProxyTable.css as before ... */
+
+.proxy-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.proxy-table tbody tr:hover td {
+  background-color: #3a3f47;
+}
+
+.cell-proxy-string {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.proxy-row.status-row-valid td {
+  border-left: 3px solid var(--accent-green);
+}
+.proxy-row.status-row-valid .cell-proxy-string {
+  color: var(--accent-green);
+}
+
+.proxy-row.status-row-invalid td {
+  border-left: 3px solid var(--accent-orange);
+}
+.proxy-row.status-row-invalid .cell-proxy-string {
+    color: var(--accent-orange);
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 1.05em;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px; /* Ensure message area has some height */
+}
+.no-data-message.prominent {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+  min-width: 65px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.status-badge.status-valid { background-color: var(--accent-green); }
+.status-badge.status-invalid { background-color: var(--accent-orange); }
+.status-badge.status-unknown { background-color: var(--accent-yellow); color: var(--dark-bg); }

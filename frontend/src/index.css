@@ -1,68 +1,230 @@
+/* Reset and Basic Styles */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --dark-bg: #1a1d24;
+  --primary-bg: #23272f;
+  --border-color: #39404d;
+  --text-color: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --accent-teal: #00bcd4;
+  --accent-orange: #ff7043;
+  --accent-green: #4caf50;
+  --accent-yellow: #ffc107;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* Full Window Setup */
+html, body, #root {
+  /* height: 100%; */ /* Removed */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Apply box-sizing globally */
 }
-a:hover {
-  color: #535bf2;
+
+*, *::before, *::after {
+  box-sizing: inherit; /* Inherit box-sizing */
 }
 
 body {
-  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--dark-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+  display: flex; 
+  flex-direction: column;
+  min-height: 100vh; /* Ensure body takes at least full viewport height */
+}
+
+#root {
+  flex-grow: 1; 
+  display: flex; 
+  flex-direction: column;
+  width: 100%; /* Ensure root takes full width */
+}
+
+/* App Container */
+.app-container {
+  width: 100%;
+  flex-grow: 1; /* Makes app-container fill the #root element */
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  flex-direction: column;
+  padding: 24px;
+  /* overflow: hidden; */ /* Removed to allow scrolling */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically align items in the header */
+  margin-bottom: 24px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 20px; /* Increased gap for better spacing when wrapped */
 }
 
-button {
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.time-interval-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Slightly increased gap */
+  background-color: var(--primary-bg);
+  padding: 10px 15px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.time-interval-group label {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  white-space: nowrap; /* Prevent label from wrapping */
+}
+
+/* Buttons - Refined */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle initial shadow */
+}
+
+.btn:hover {
+  opacity: 0.9;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Enhanced shadow on hover */
+}
+.btn:focus { /* For accessibility and keyboard navigation */
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(var(--accent-teal), 0.3);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Slightly reduced shadow on active */
+}
+
+.btn-start {
+  background-color: var(--accent-green);
+  color: white;
+}
+
+.btn-stop {
+  background-color: var(--accent-orange);
+  color: white;
+}
+
+.btn-refresh {
+  background-color: var(--accent-teal);
+  color: white;
+}
+
+.btn-exit {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Select Input */
+.select-interval {
+  padding: 9px 12px;
+  border-radius: 6px;
+  background-color: var(--dark-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  font-size: 0.95em;
+  min-width: 100px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.select-interval:focus {
+  outline: none;
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.3);
+}
+
+/* Table Area */
+.table-area {
+  background-color: var(--primary-bg);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Slightly enhanced shadow */
+  overflow: hidden; /* To contain the .table-responsive-wrapper's scrollbar */
+  flex-grow: 1; /* Key for making table area fill vertical space */
+  display: flex; /* To allow .table-responsive-wrapper to grow */
+  flex-direction: column; /* To stack elements within if any */
+}
+
+/* Footer Actions */
+.footer-actions {
+  margin-top: 24px; /* This will be the space between table and footer */
+  padding-top: 16px; /* Add some padding if border is added */
+  border-top: 1px solid var(--border-color); /* Optional: visual separator */
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 16px; /* Reduce padding on smaller screens */
   }
-  a:hover {
-    color: #747bff;
+
+  .header-controls {
+    flex-direction: column; /* Stack button group and time interval group */
+    align-items: stretch; /* Make groups take full width when stacked */
   }
-  button {
-    background-color: #f9f9f9;
+
+  .time-interval-group {
+    justify-content: space-between; /* Distribute space within the time interval group */
+  }
+
+  .btn {
+    font-size: 0.9em; /* Slightly smaller buttons */
+    padding: 8px 16px;
+    min-width: 100px; /* Adjust min-width */
+  }
+
+  .select-interval {
+    flex-grow: 1; /* Allow select to take more space if needed */
+  }
+
+  .footer-actions {
+    justify-content: center; /* Center exit button on small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column; /* Stack buttons within the group */
+    align-items: stretch; /* Make buttons full width in column */
+  }
+  .button-group .btn {
+    width: 100%; /* Make buttons in group full width */
+    margin-bottom: 8px; /* Add space between stacked buttons */
+  }
+  .button-group .btn:last-child {
+    margin-bottom: 0;
+  }
+
+  .time-interval-group {
+    flex-direction: column; /* Stack label and select */
+    align-items: stretch;
+  }
+  .time-interval-group label {
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .select-interval {
+    width: 100%;
   }
 }
