@@ -1,39 +1,8 @@
-/* Added Light Mode Support */
-:root {
-  --bg-color: #ffffff;
-  --text-color: #1a1a1a;
-  --text-secondary: #555;
-  --border-color: #ccc;
-  --primary-bg: #f9f9f9;
-
-  --accent-green: #28a745;
-  --accent-orange: #ff9800;
-  --accent-teal: #00bcd4;
-  --accent-yellow: #ffeb3b;
-
-  --dark-bg: #111;
-  --font-mono: "JetBrains Mono", monospace;
-}
-
-:root[data-theme="dark"] {
-  --bg-color: #1e1f22;
-  --text-color: #e6e6e6;
-  --text-secondary: #b3b3b3;
-  --border-color: #2b2d31;
-  --primary-bg: #2a2d33;
-}
-
-body {
-  background: var(--bg-color);
-  color: var(--text-color);
-}
-
-/* Existing CSS from your file, now using variables */
 .proxy-table-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+  height: 100%; /* This will now try to fill the .table-area */
+  overflow: hidden; /* Contains the .table-responsive-wrapper */
 }
 
 .table-controls {
@@ -45,7 +14,7 @@ body {
   border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
   gap: 10px;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Prevent controls from shrinking */
 }
 
 .table-section-title {
@@ -81,18 +50,19 @@ body {
 }
 
 .filter-btn:disabled, .sort-btn:disabled {
-  background-color: #ddd !important;
+  background-color: #373b41 !important;
   color: var(--text-secondary) !important;
   cursor: not-allowed;
   opacity: 0.6;
   border-color: var(--border-color) !important;
 }
 
+
 .filter-btn:hover:not(.active):not(:disabled),
 .sort-btn:hover:not(.active):not(:disabled) {
-  background-color: #e6e6e6;
+  background-color: #3a3f47;
   color: var(--text-color);
-  border-color: #999;
+  border-color: #555c66;
 }
 
 .filter-btn.active, .sort-btn.active {
@@ -110,10 +80,10 @@ body {
 }
 
 .table-responsive-wrapper {
-  overflow-y: auto;
-  overflow-x: auto;
+  overflow-y: auto; /* Primary scroll for table rows */
+  overflow-x: auto; /* Scroll for wide table */
   width: 100%;
-  flex-grow: 1;
+  flex-grow: 1; /* Takes remaining space within .proxy-table-container */
   -webkit-overflow-scrolling: touch;
 }
 
@@ -133,21 +103,31 @@ body {
 }
 
 .proxy-table th {
-  background-color: var(--primary-bg);
+  background-color: #2f343c;
   color: var(--text-color);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: sticky; 
+  top: 0; 
+  z-index: 10; /* Make sure header is above scrolled content */
+}
+
+/* ... rest of ProxyTable.css as before ... */
+
+.proxy-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .proxy-table tbody tr:hover td {
-  background-color: #f0f0f0;
+  background-color: #3a3f47;
 }
 
-/* Light mode row coloring */
+.cell-proxy-string {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
 .proxy-row.status-row-valid td {
   border-left: 3px solid var(--accent-green);
 }
@@ -159,9 +139,37 @@ body {
   border-left: 3px solid var(--accent-orange);
 }
 .proxy-row.status-row-invalid .cell-proxy-string {
-  color: var(--accent-orange);
+    color: var(--accent-orange);
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 1.05em;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px; /* Ensure message area has some height */
+}
+.no-data-message.prominent {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+  min-width: 65px;
+  text-align: center;
+  text-transform: capitalize;
 }
 
 .status-badge.status-valid { background-color: var(--accent-green); }
 .status-badge.status-invalid { background-color: var(--accent-orange); }
-.status-badge.status-unknown { background-color: var(--accent-yellow); color: #000; }
+.status-badge.status-unknown { background-color: var(--accent-yellow); color: var(--dark-bg); }
