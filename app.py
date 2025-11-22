@@ -1,22 +1,17 @@
-from flask import Flask
 import requests
+from flask import Flask, jsonify
 
-# Initialize the Flask application
+from freeproxylist import get_proxies_fpl
+
 app = Flask(__name__)
 
-# temp list
-PROXY_LIST = [
-    "http://192.168.1.1:8080",
-    "http://8.212.151.166:80"
-]
+TEST_URL = "http://httpbin.org/ip"
+REQUEST_TIMEOUT = 3
 
-
-TEST_URL = 'http://httpbin.org/ip'
-REQUEST_TIMEOUT = 5
 
 def check_proxy_status(proxy_url):
     print(f"Checking proxy: {proxy_url}...")
-    
+
     proxies = {
         "http": proxy_url,
         "https": proxy_url,
@@ -24,31 +19,42 @@ def check_proxy_status(proxy_url):
 
     try:
         response = requests.get(TEST_URL, proxies=proxies, timeout=REQUEST_TIMEOUT)
-        
-        if response.status_code >= 200 and response.status_code < 300:
-            print(f"Proxy {proxy_url} is working.")
-            return True
+
+        if 200 <= response.status_code < 300:
+            print(f"SUCCESS: {proxy_url}")
+            return "Working", response.elapsed.total_seconds()
         else:
-            print(f"Proxy {proxy_url} returned status code: {response.status_code}")
-            return False
+            print(f"FAIL: {proxy_url} (Status {response.status_code})")
+            return f"Error: {response.status_code}", 0
 
-    except requests.exceptions.RequestException as e:
-        print(f"Proxy {proxy_url} failed to connect.")
-        return False
+    except requests.exceptions.RequestException:
+        print(f"FAIL: {proxy_url} (Connection Error)")
+        return "Failed to connect", 0
 
-@app.route('/')
+
+@app.route("/")
 def index():
+    print("Scraping proxies from free-proxy-list.net...")
+    all_proxies = get_proxies_fpl()
 
-    results = {}
-    for proxy in PROXY_LIST:
-        status = check_proxy_status(proxy)
-        results[proxy] = status
-    
-    print("\n")
+    proxy_subset = all_proxies
 
-    return "Proxy checker"
+    results = []
 
-if __name__ == '__main__':
-    # Run the Flask app
-    # We set debug=True for development
+    for proxy in proxy_subset:
+        status, time_taken = check_proxy_status(proxy)
+        results.append(
+            {"proxy": proxy, "status": status, "response_time_seconds": time_taken}
+        )
+
+    return jsonify(
+        {
+            "total_scraped": len(all_proxies),
+            "checked_count": len(proxy_subset),
+            "results": results,
+        }
+    )
+
+
+if __name__ == "__main__":
     app.run(debug=True)
