@@ -1,1 +1,2 @@
 *.pynb
+*__pycache__*
